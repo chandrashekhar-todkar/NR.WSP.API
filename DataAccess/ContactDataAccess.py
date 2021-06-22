@@ -4,6 +4,7 @@ import pyodbc
 import datetime
 
 from DataAccess.DBConnection import getDBConnection
+from DataAccess.CursorByName import CursorByName
 
 class ContactDataAccess:
     
@@ -23,18 +24,14 @@ class ContactDataAccess:
             __cursor.execute(__selectQuery)
 
             #Fetch records
-            #__records = [dict((__cursor.description[i][0], value) \
-            #   for i, value in enumerate(row)) for row in __cursor.fetchall()]
-            __records = list(__cursor.fetchall())
+            __records = list()
+            for row in CursorByName(__cursor):
+                __records.append(row)
 
         finally:    
             #close connection
             __cnxn.close()
 
-        #return (__records[0] if __records else None)
-        #clean up the recordset
-        __records = [tuple(record) for record in __records]
-        
         return __records          
 
     def addContact(self, contact):

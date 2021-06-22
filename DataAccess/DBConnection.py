@@ -1,6 +1,5 @@
 import time
 
-import os
 from configparser import ConfigParser
 
 import pyodbc
@@ -11,11 +10,11 @@ def getDBConnection():
     configParse.read("config.ini")
     
     # Define the Driver
-    __driver = configParse.get("database", "driver") #'{ODBC Driver 17 for SQL Server}'
+    __driver = configParse.get("database", "driver")
 
     #Define Connect String 
-    __connectionString = configParse.get("database", "connectionstring") #"Driver={driver};Server=CHANDRADEEP;Database=ContactDB;Integrated Security=True;Trusted_Connection=yes;".format(driver=__driver)
-    __connectionString = __connectionString.format(driver=__driver).replace('"', '')
+    __connectionString = configParse.get("database", "connectionstring") 
+    __connectionString = __connectionString.format(driver=__driver)
     
     try:
         cnxn: pyodbc.Connection = pyodbc.connect(__connectionString)
